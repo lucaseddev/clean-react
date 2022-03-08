@@ -15,6 +15,6 @@
     "allowJs": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "./webpack.config.js", "./jest.config.js"],
   "exclude": ["tests/e2e/cypress"]
 }

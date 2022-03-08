@@ -5,15 +5,11 @@
     }
   },
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "plugins": ["@typescript-eslint", "prettier", "react"],
   "extends": [
     "standard-with-typescript",
     "prettier",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended"
   ],
   "rules": {
@@ -22,5 +18,15 @@
     "@typescript-eslint/camelcase": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
-  }
+  },
+
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ]
 }

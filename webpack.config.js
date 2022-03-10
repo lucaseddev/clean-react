@@ -6,20 +6,22 @@ module.exports = {
   mode: 'development',
   entry: './src/main/index.tsx',
   output: {
-    path: path.join(__dirname, 'public/js'),
-    publicPath: '/public/js',
+    path: path.resolve(__dirname, 'public/js'),
+    publicPath: '/public/js/',
     filename: 'bundle.js',
+    clean: true,
   },
+  context: __dirname,
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.scss'],
     alias: {
-      '@': path.join(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -43,13 +45,20 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: './public',
-    writeToDisk: true,
-    historyApiFallback: true,
+    hot: true,
+    compress: true,
+    client: {
+      logging: 'info',
+      overlay: true,
+      progress: true,
+    },
+    devMiddleware: {
+      writeToDisk: true,
+    },
   },
   externals: {
     react: 'React',
-    'react-dom': 'ReactDom',
+    'react-dom': 'ReactDOM',
   },
   plugins: [new CleanWebpackPlugin()],
 };

@@ -47,6 +47,7 @@ module.exports = {
   devServer: {
     hot: true,
     compress: true,
+    historyApiFallback: true,
     client: {
       logging: 'info',
       overlay: true,

@@ -12,6 +12,7 @@ export const Login: React.FC = () => {
   return (
     <div className={Styles.login}>
       <LoginHeader />
+
       <form className={Styles.form}>
         <h2>Login</h2>
 

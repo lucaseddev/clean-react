@@ -1,18 +1,5 @@
 @import '../../styles/colors.scss';
 
-input[type='password'],
-input[type='email'] {
-  border: 1px solid $primaryLight;
-  line-height: 40px;
-  border-radius: 4px;
-  padding: 0px 12px;
-  padding-right: 40px;
-
-  &:focus {
-    outline-color: $primaryLight;
-  }
-}
-
 .inputWrap {
   display: flex;
   flex-direction: row;

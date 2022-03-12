@@ -16,9 +16,20 @@ export const Input: React.FC<InputProps> = ({
   name,
   ...rest
 }) => {
+  const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
+    event.target.readOnly = false;
+  };
+
   return (
     <div className={Styles.inputWrap}>
-      <input {...rest} type={type} name={name} placeholder={placeholder} />
+      <input
+        {...rest}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        readOnly
+        onFocus={enableInput}
+      />
       <span className={Styles.status}>🔴</span>
     </div>
   );

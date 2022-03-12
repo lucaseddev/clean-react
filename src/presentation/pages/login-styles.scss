@@ -12,21 +12,6 @@ body {
   background-color: $background;
 }
 
-button {
-  background-color: $primary;
-  color: $white;
-  border-radius: 8px;
-
-  line-height: 60px;
-  padding: 0px 12px;
-  font-size: 16px;
-  border: none;
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
 .login {
   display: flex;
   flex-direction: column;

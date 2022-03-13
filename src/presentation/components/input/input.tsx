@@ -33,6 +33,14 @@ export const Input: React.FC<InputProps> = ({
     });
   };
 
+  const getStatus = (): string => {
+    return errorMessage ? '🔴' : '🟢';
+  };
+
+  const getTooltip = (): string => {
+    return errorMessage || 'Tudo certo!';
+  };
+
   return (
     <div className={Styles.inputWrap}>
       <input
@@ -48,9 +56,9 @@ export const Input: React.FC<InputProps> = ({
       />
       <span
         data-testid={`${name}-status`}
-        title={errorMessage}
+        title={getTooltip()}
         className={Styles.status}>
-        {errorMessage && '🔴'}
+        {getStatus()}
       </span>
     </div>
   );

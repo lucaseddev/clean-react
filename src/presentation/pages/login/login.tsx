@@ -22,6 +22,7 @@ export const Login: React.FC<LoginProps> = ({ validation }) => {
     email: '',
     emailError: 'Campo obrigatório',
 
+    password: '',
     passwordError: 'Campo obrigatório',
   });
 
@@ -30,6 +31,12 @@ export const Login: React.FC<LoginProps> = ({ validation }) => {
       email: state.email,
     });
   }, [state.email]);
+
+  useEffect(() => {
+    validation.validate({
+      password: state.password,
+    });
+  }, [state.password]);
 
   return (
     <div className={Styles.login}>

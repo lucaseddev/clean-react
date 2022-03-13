@@ -6,9 +6,13 @@ export type ButtonProps = React.DetailedHTMLProps<
   HTMLButtonElement
 >;
 
-export const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  className,
+  ...rest
+}) => {
   return (
-    <button {...rest} className={Styles.button}>
+    <button {...rest} className={[Styles.button, className].join(' ')}>
       {children}
     </button>
   );

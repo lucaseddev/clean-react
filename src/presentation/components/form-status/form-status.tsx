@@ -7,7 +7,9 @@ import { FormContext } from '@/presentation/contexts';
 export type FormStatusProps = unknown;
 
 export const FormStatus: React.FC<FormStatusProps> = () => {
-  const { isLoading, errorMessage } = useContext(FormContext);
+  const state = useContext(FormContext);
+  const { isLoading, errorMessage } = state;
+
   return (
     <div data-testid="error-wrap" className={Styles.errorWrap}>
       {isLoading && <Spinner className={Styles.spinner} />}

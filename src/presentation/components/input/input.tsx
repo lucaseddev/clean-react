@@ -5,6 +5,7 @@ export type InputProps = {
   placeholder?: string;
   name: string;
   type: React.HTMLInputTypeAttribute;
+  errorMessage?: string;
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
@@ -14,6 +15,7 @@ export const Input: React.FC<InputProps> = ({
   type,
   placeholder,
   name,
+  errorMessage,
   ...rest
 }) => {
   const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
@@ -30,7 +32,12 @@ export const Input: React.FC<InputProps> = ({
         readOnly
         onFocus={enableInput}
       />
-      <span className={Styles.status}>🔴</span>
+      <span
+        data-testid={`${name}-status`}
+        title={errorMessage}
+        className={Styles.status}>
+        {errorMessage && '🔴'}
+      </span>
     </div>
   );
 };

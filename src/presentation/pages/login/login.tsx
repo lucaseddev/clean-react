@@ -29,10 +29,10 @@ export const Login: React.FC = () => {
           <h2>Login</h2>
 
           <Input
-            errorMessage={errorState.email}
             name="email"
             type="email"
             placeholder="Digite seu e-mail"
+            errorMessage={errorState.email}
           />
           <Input
             name="password"

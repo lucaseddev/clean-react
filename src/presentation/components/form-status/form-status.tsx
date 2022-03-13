@@ -4,7 +4,7 @@ import { Spinner } from '@/presentation/components';
 import Styles from './form-status-styles.scss';
 import { FormContext } from '@/presentation/contexts';
 
-export type FormStatusProps = any;
+export type FormStatusProps = unknown;
 
 export const FormStatus: React.FC<FormStatusProps> = () => {
   const { isLoading, errorMessage } = useContext(FormContext);

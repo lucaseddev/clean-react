@@ -15,7 +15,7 @@ type StateProps = {
 };
 
 export const Login: React.FC = () => {
-  const [state, setState] = useState<StateProps>({
+  const [state] = useState<StateProps>({
     isLoading: false,
     errorMessage: '',
   });
@@ -38,7 +38,7 @@ export const Login: React.FC = () => {
           <Button type="submit">Entrar</Button>
           <span className={Styles.link}>Criar conta</span>
 
-          <FormStatus errorMessage="Erro" />
+          <FormStatus />
         </form>
       </FormContext.Provider>
 

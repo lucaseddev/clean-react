@@ -20,14 +20,17 @@ export const Login: React.FC<LoginProps> = ({ validation }) => {
     errorMessage: '',
 
     email: '',
-    emailError: 'Campo obrigatório',
+    emailError: '',
 
     password: '',
     passwordError: 'Campo obrigatório',
   });
 
   useEffect(() => {
-    validation.validate('email', state.email);
+    setState({
+      ...state,
+      emailError: validation.validate('email', state.email),
+    });
   }, [state.email]);
 
   useEffect(() => {

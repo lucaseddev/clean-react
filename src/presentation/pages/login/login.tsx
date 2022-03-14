@@ -59,7 +59,7 @@ export const Login: React.FC<LoginProps> = ({ validation }) => {
             className={Styles.submit}
             data-testid="submit"
             type="submit"
-            disabled>
+            disabled={!!state.emailError || !!state.passwordError}>
             Entrar
           </Button>
           <span className={Styles.link}>Criar conta</span>

@@ -1,8 +1,8 @@
-import { AccountModel } from "@/domain/models/account-model";
+import { AccountModel } from '@/domain/models/account-model';
 
 export type AuthenticationParams = {
   email: string;
-  passowrd: string;
+  password: string;
 };
 
 export interface Authentication {

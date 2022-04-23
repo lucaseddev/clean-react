@@ -41,17 +41,25 @@ export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
   ): Promise<void> => {
     event.preventDefault();
 
-    if (state.isLoading || state.emailError || state.passwordError) return;
+    try {
+      if (state.isLoading || state.emailError || state.passwordError) return;
 
-    setState({
-      ...state,
-      isLoading: true,
-    });
+      setState({
+        ...state,
+        isLoading: true,
+      });
 
-    await authentication.auth({
-      email: state.email,
-      password: state.password,
-    });
+      await authentication.auth({
+        email: state.email,
+        password: state.password,
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        isLoading: false,
+        errorMessage: error.message,
+      });
+    }
   };
 
   return (

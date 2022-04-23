@@ -15,7 +15,11 @@ export const FormStatus: React.FC<FormStatusProps> = () => {
       {isLoading && (
         <Spinner data-testid="form-spinner" className={Styles.spinner} />
       )}
-      {errorMessage && <span className={Styles.error}>{errorMessage}</span>}
+      {errorMessage && (
+        <span data-testid="main-error" className={Styles.error}>
+          {errorMessage}
+        </span>
+      )}
     </div>
   );
 };

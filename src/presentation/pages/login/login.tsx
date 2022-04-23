@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Styles from './login-styles.scss';
 import {
@@ -19,6 +19,8 @@ type LoginProps = {
 };
 
 export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
@@ -57,6 +59,7 @@ export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
       });
 
       localStorage.setItem('accessToken', account.accessToken);
+      navigate('/', { replace: true });
     } catch (error) {
       setState({
         ...state,

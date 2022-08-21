@@ -40,33 +40,32 @@ export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
     });
   }, [state.email, state.password]);
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    try {
-      if (state.isLoading || state.emailError || state.passwordError) return;
+    if (state.isLoading || state.emailError || state.passwordError) return;
 
-      setState({
-        ...state,
-        isLoading: true,
-      });
+    setState({
+      ...state,
+      isLoading: true,
+    });
 
-      const account = await authentication.auth({
+    authentication
+      .auth({
         email: state.email,
         password: state.password,
+      })
+      .then(account => {
+        localStorage.setItem('accessToken', account.accessToken);
+        navigate('/', { replace: true });
+      })
+      .catch(error => {
+        setState({
+          ...state,
+          isLoading: false,
+          errorMessage: error.message,
+        });
       });
-
-      localStorage.setItem('accessToken', account.accessToken);
-      navigate('/', { replace: true });
-    } catch (error) {
-      setState({
-        ...state,
-        isLoading: false,
-        errorMessage: error.message,
-      });
-    }
   };
 
   return (

@@ -20,4 +20,24 @@ describe('ValidationComposite', () => {
 
     expect(error).toBe(errorMsg);
   });
+
+  it('Should return first validation error that fails', () => {
+    const field = faker.database.column();
+    const fieldValidationSpy1Error = new ValidationSpy(field);
+    const fieldValidationSpy2Error = new ValidationSpy(field);
+
+    const errorMsg1 = faker.random.word();
+    const errorMsg2 = faker.random.word();
+    fieldValidationSpy1Error.error = new Error(errorMsg1);
+    fieldValidationSpy2Error.error = new Error(errorMsg2);
+
+    const sut = new ValidationComposite([
+        fieldValidationSpy1Error,
+      fieldValidationSpy2Error,
+    ]);
+
+    const error = sut.validate(field, faker.random.word());
+
+    expect(error).toBe(errorMsg1);
+  });
 });

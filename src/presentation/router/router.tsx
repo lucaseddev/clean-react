@@ -1,14 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Login } from '@/presentation/pages';
 import '@/presentation/styles/global.scss';
 
-export const Router: React.FC = () => {
+type TProps = {
+  makeLogin: React.FC;
+};
+
+export const Router: React.FC<TProps> = ({ makeLogin: MakeLogin }) => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="login" element={<Login />} />
+        <Route path="/">
+          <Route path="login" element={<MakeLogin />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -49,7 +49,7 @@ describe('ValidationComposite', () => {
     expect(error).toBe(errorMsg1);
   });
 
-  it('Should return first validation error that fails', () => {
+  it('Should not return any error if validation succeeds', () => {
     const field = faker.database.column();
 
     const { sut } = makeSut(field);

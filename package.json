@@ -9,6 +9,7 @@
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
     "prepare": "husky install",
     "check-dep": "npm-check -u -s"
   },
@@ -54,6 +55,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "coveralls": "^3.1.1",
     "eslint-plugin-n": "^15.2.5",
     "jest-environment-jsdom": "^29.0.1",
     "react": "^18.2.0",

@@ -11,7 +11,7 @@ import faker from '@faker-js/faker';
 import { unstable_HistoryRouter as Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import { Login } from './login';
+import { Login } from '@/presentation/pages';
 import { AuthenticationSpy, ValidationStub } from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { act } from 'react-dom/test-utils';

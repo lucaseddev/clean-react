@@ -1,5 +1,5 @@
 import { AxiosHttpClient } from './axios-http-client';
-import { mockAxios } from '@/infra/test';
+import { mockAxios, mockHttpResponse } from '@/infra/test';
 import { mockPostRequest } from '@/data/test';
 import axios from 'axios';
 
@@ -32,6 +32,17 @@ describe('AxiosHttpClient', () => {
   test('Should return correct statusCode and body', () => {
     const { sut, mockedAxios } = makeSut();
     const promise = sut.post(mockPostRequest());
+
+    expect(promise).toEqual(mockedAxios.post.mock.results[0].value);
+  });
+
+  test('Should return correct statusCode and body on failure', () => {
+    const { sut, mockedAxios } = makeSut();
+    const promise = sut.post(mockPostRequest());
+
+    mockedAxios.post.mockRejectedValueOnce({
+      response: mockHttpResponse(),
+    });
 
     expect(promise).toEqual(mockedAxios.post.mock.results[0].value);
   });

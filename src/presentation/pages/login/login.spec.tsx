@@ -7,7 +7,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import 'jest-localstorage-mock';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { unstable_HistoryRouter as Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 

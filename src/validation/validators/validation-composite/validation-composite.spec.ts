@@ -1,5 +1,5 @@
-import faker from '@faker-js/faker';
-  import { ValidationSpy } from '@/validation/test';
+import { faker } from '@faker-js/faker';
+import { ValidationSpy } from '@/validation/test';
 import { ValidationComposite } from './validation-composite';
 
 type TSutTypes = {

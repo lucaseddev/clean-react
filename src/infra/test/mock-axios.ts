@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
 export const mockHttpResponse = (): unknown => ({

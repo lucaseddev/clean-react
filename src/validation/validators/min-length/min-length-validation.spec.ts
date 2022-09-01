@@ -1,5 +1,5 @@
 import { InvalidFieldError } from '@/validation/errors';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { MinLengthValidation } from './min-length-validation';
 
 const makeSut = (minLength: number): MinLengthValidation =>

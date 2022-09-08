@@ -12,13 +12,18 @@ import { unstable_HistoryRouter as Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { Login } from '@/presentation/pages';
-import { AuthenticationSpy, ValidationStub } from '@/presentation/test';
+import {
+  AuthenticationSpy,
+  SaveAccessTokenMock,
+  ValidationStub,
+} from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { act } from 'react-dom/test-utils';
 
 type SutTypes = {
   sut: RenderResult;
   authenticationSpy: AuthenticationSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
@@ -32,13 +37,19 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   validationStub.errorMessage = params?.validationError;
 
+  const saveAccessTokenMock = new SaveAccessTokenMock();
+
   const sut = render(
     <Router history={history}>
-      <Login validation={validationStub} authentication={authenticationSpy} />
+      <Login
+        validation={validationStub}
+        authentication={authenticationSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
     </Router>
   );
 
-  return { sut, authenticationSpy };
+  return { sut, authenticationSpy, saveAccessTokenMock };
 };
 
 const simulateValidSubmit = async (
@@ -85,10 +96,7 @@ const testStatusForField = (
   expect(emailStatus.textContent).toBe(validationError ? '🔴' : '🟢');
 };
 
-const testErrorWrapChildCount = (
-  sut: RenderResult,
-  count: number
-): void => {
+const testErrorWrapChildCount = (sut: RenderResult, count: number): void => {
   const errorWrap = sut.getByTestId('error-wrap');
   expect(errorWrap.childElementCount).toBe(count);
 };
@@ -96,15 +104,11 @@ const testErrorWrapChildCount = (
 describe('Login Page', () => {
   afterEach(cleanup);
 
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
   it('Should start with initial state', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
 
-    testErrorWrapChildCount(sut, 0)
+    testErrorWrapChildCount(sut, 0);
 
     const submitButton = sut.getByTestId('submit') as HTMLButtonElement;
     expect(submitButton.disabled).toBe(true);
@@ -218,13 +222,12 @@ describe('Login Page', () => {
     testErrorWrapChildCount(sut, 1);
   });
 
-  it('Should add accessToken to localstorage on auth success', async () => {
-    const { sut, authenticationSpy } = makeSut();
+  it('Should call SaveAccessToken on success', async () => {
+    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
 
     await simulateValidSubmit(sut);
 
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      'accessToken',
+    expect(saveAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken
     );
 

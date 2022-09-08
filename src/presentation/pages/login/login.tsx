@@ -11,14 +11,19 @@ import {
 } from '@/presentation/components';
 import { FormContext } from '@/presentation/contexts';
 import { Validation } from '@/presentation/protocols/validation';
-import { Authentication } from '@/domain/usecases';
+import { Authentication, SaveAccessToken } from '@/domain/usecases';
 
 type LoginProps = {
   validation: Validation;
   authentication: Authentication;
+  saveAccessToken: SaveAccessToken;
 };
 
-export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
+export const Login: React.FC<LoginProps> = ({
+  validation,
+  authentication,
+  saveAccessToken,
+}) => {
   const navigate = useNavigate();
 
   const [state, setState] = useState({
@@ -55,8 +60,8 @@ export const Login: React.FC<LoginProps> = ({ validation, authentication }) => {
         email: state.email,
         password: state.password,
       })
-      .then(account => {
-        localStorage.setItem('accessToken', account.accessToken);
+      .then(async account => {
+        await saveAccessToken.save(account.accessToken);
         navigate('/', { replace: true });
       })
       .catch(error => {

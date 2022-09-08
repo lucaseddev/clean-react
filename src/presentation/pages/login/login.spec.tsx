@@ -17,7 +17,7 @@ import {
   SaveAccessTokenMock,
   ValidationStub,
 } from '@/presentation/test';
-import { InvalidCredentialsError } from '@/domain/errors';
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { act } from 'react-dom/test-utils';
 
 type SutTypes = {
@@ -233,6 +233,25 @@ describe('Login Page', () => {
 
     expect(history.index).toBe(0);
     expect(history.location.pathname).toBe('/');
+  });
+
+  it('Should present error if SaveAccessToken fails', async () => {
+    const { sut, saveAccessTokenMock} = makeSut();
+
+    const error = new UnexpectedError();
+
+    jest
+      .spyOn(saveAccessTokenMock, 'save')
+      .mockReturnValueOnce(Promise.reject(error));
+
+    await act(async () => {
+      await simulateValidSubmit(sut);
+    });
+
+    const mainError = await sut.findByTestId('main-error');
+    expect(mainError.textContent).toEqual(error.message);
+
+    testErrorWrapChildCount(sut, 1);
   });
 
   it('Should go to signup page', () => {

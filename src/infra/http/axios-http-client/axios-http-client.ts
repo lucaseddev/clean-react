@@ -5,9 +5,9 @@ import {
 } from '@/data/protocols/http';
 import axios, { AxiosResponse } from 'axios';
 
-export class AxiosHttpClient implements HttpPostClient<unknown, unknown> {
-  async post(params: HttpPostParams<unknown>): Promise<HttpResponse<unknown>> {
-    let httpResponse: AxiosResponse<unknown>;
+export class AxiosHttpClient implements HttpPostClient<unknown, never> {
+  async post(params: HttpPostParams<unknown>): Promise<HttpResponse<never>> {
+    let httpResponse: AxiosResponse<never>;
 
     try {
       httpResponse = await axios.post(params.url, params.body);

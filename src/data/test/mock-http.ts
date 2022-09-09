@@ -1,9 +1,10 @@
 import {
-  HttpResponse,
-  HttpStatusCode,
   HttpPostClient,
   HttpPostParams,
+  HttpResponse,
+  HttpStatusCode,
 } from '@/data/protocols/http';
+import { faker } from '@faker-js/faker';
 
 export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
   url?: string;
@@ -19,3 +20,8 @@ export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
     return this.response;
   }
 }
+
+export const mockPostRequest = (): HttpPostParams<unknown> => ({
+  url: faker.internet.url(),
+  body: faker.helpers.objectValue({}),
+});

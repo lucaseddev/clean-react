@@ -3,7 +3,6 @@ import { cleanup, render, RenderResult } from '@testing-library/react';
 import { SignUp } from './signup';
 import { FormHelper, ValidationStub } from '@/presentation/test';
 import { faker } from '@faker-js/faker';
-import { populateField } from '@/presentation/test/form-helper';
 
 type SutTypes = {
   sut: RenderResult;
@@ -45,7 +44,7 @@ describe('SignUp Page', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
 
-    populateField(sut, 'name');
+    FormHelper.populateField(sut, 'name');
 
     FormHelper.testStatusForField(sut, 'name', validationError);
   });

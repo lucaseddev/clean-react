@@ -101,6 +101,11 @@ const testErrorWrapChildCount = (sut: RenderResult, count: number): void => {
   expect(errorWrap.childElementCount).toBe(count);
 };
 
+const testButtonIsDisabled = (sut: RenderResult, testId: string, isDisabled: boolean): void => {
+  const button = sut.getByTestId(testId) as HTMLButtonElement;
+  expect(button.disabled).toBe(isDisabled);
+}
+
 describe('Login Page', () => {
   afterEach(cleanup);
 
@@ -109,10 +114,7 @@ describe('Login Page', () => {
     const { sut } = makeSut({ validationError });
 
     testErrorWrapChildCount(sut, 0);
-
-    const submitButton = sut.getByTestId('submit') as HTMLButtonElement;
-    expect(submitButton.disabled).toBe(true);
-
+    testButtonIsDisabled(sut, 'submit', true);
     testStatusForField(sut, 'email', validationError);
     testStatusForField(sut, 'password', validationError);
   });
@@ -155,9 +157,7 @@ describe('Login Page', () => {
 
     populateEmailField(sut);
     populatePasswordField(sut);
-
-    const submitButton = sut.getByTestId('submit') as HTMLButtonElement;
-    expect(submitButton.disabled).toBe(false);
+    testButtonIsDisabled(sut, 'submit', false);
   });
 
   it('Should show loading indicator on submit', async () => {

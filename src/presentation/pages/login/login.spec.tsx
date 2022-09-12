@@ -16,6 +16,7 @@ import {
   AuthenticationSpy,
   SaveAccessTokenMock,
   ValidationStub,
+  FormHelper,
 } from '@/presentation/test';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { act } from 'react-dom/test-utils';
@@ -86,26 +87,6 @@ const populatePasswordField = (
   });
 };
 
-const testStatusForField = (
-  sut: RenderResult,
-  fieldName: string,
-  validationError?: string
-): void => {
-  const emailStatus = sut.getByTestId(`${fieldName}-status`);
-  expect(emailStatus.title).toBe(validationError || 'Tudo certo!');
-  expect(emailStatus.textContent).toBe(validationError ? '🔴' : '🟢');
-};
-
-const testErrorWrapChildCount = (sut: RenderResult, count: number): void => {
-  const errorWrap = sut.getByTestId('error-wrap');
-  expect(errorWrap.childElementCount).toBe(count);
-};
-
-const testButtonIsDisabled = (sut: RenderResult, testId: string, isDisabled: boolean): void => {
-  const button = sut.getByTestId(testId) as HTMLButtonElement;
-  expect(button.disabled).toBe(isDisabled);
-}
-
 describe('Login Page', () => {
   afterEach(cleanup);
 
@@ -113,10 +94,10 @@ describe('Login Page', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
 
-    testErrorWrapChildCount(sut, 0);
-    testButtonIsDisabled(sut, 'submit', true);
-    testStatusForField(sut, 'email', validationError);
-    testStatusForField(sut, 'password', validationError);
+    FormHelper.testChildCount(sut, 'error-wrap', 0);
+    FormHelper.testButtonIsDisabled(sut, 'submit', true);
+    FormHelper.testStatusForField(sut, 'email', validationError);
+    FormHelper.testStatusForField(sut, 'password', validationError);
   });
 
   it('Should show email error if Validation fails', () => {
@@ -125,7 +106,7 @@ describe('Login Page', () => {
 
     populateEmailField(sut);
 
-    testStatusForField(sut, 'email', validationError);
+    FormHelper.testStatusForField(sut, 'email', validationError);
   });
 
   it('Should show password error if Validation fails', () => {
@@ -134,7 +115,7 @@ describe('Login Page', () => {
 
     populatePasswordField(sut);
 
-    testStatusForField(sut, 'password', validationError);
+    FormHelper.testStatusForField(sut, 'password', validationError);
   });
 
   it('Should show valid email state if validation succeeds', () => {
@@ -142,14 +123,14 @@ describe('Login Page', () => {
 
     populateEmailField(sut);
 
-    testStatusForField(sut, 'email');
+    FormHelper.testStatusForField(sut, 'email');
   });
 
   it('Should show valid password state if validation succeeds', () => {
     const { sut } = makeSut();
 
     populatePasswordField(sut);
-    testStatusForField(sut, 'password');
+    FormHelper.testStatusForField(sut, 'password');
   });
 
   it('Should enable submit button if form is valid', () => {
@@ -157,7 +138,7 @@ describe('Login Page', () => {
 
     populateEmailField(sut);
     populatePasswordField(sut);
-    testButtonIsDisabled(sut, 'submit', false);
+    FormHelper.testButtonIsDisabled(sut, 'submit', false);
   });
 
   it('Should show loading indicator on submit', async () => {
@@ -219,7 +200,7 @@ describe('Login Page', () => {
     const mainError = await sut.findByTestId('main-error');
     expect(mainError.textContent).toEqual(error.message);
 
-    testErrorWrapChildCount(sut, 1);
+    FormHelper.testChildCount(sut, 'error-wrap', 1);
   });
 
   it('Should call SaveAccessToken on success', async () => {
@@ -236,7 +217,7 @@ describe('Login Page', () => {
   });
 
   it('Should present error if SaveAccessToken fails', async () => {
-    const { sut, saveAccessTokenMock} = makeSut();
+    const { sut, saveAccessTokenMock } = makeSut();
 
     const error = new UnexpectedError();
 
@@ -251,7 +232,7 @@ describe('Login Page', () => {
     const mainError = await sut.findByTestId('main-error');
     expect(mainError.textContent).toEqual(error.message);
 
-    testErrorWrapChildCount(sut, 1);
+    FormHelper.testChildCount(sut, 'error-wrap', 1);
   });
 
   it('Should go to signup page', () => {

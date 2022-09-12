@@ -7,11 +7,10 @@ import {
 } from '@/presentation/components';
 import { FormContext } from '@/presentation/contexts';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Styles from './signup.styles.scss';
 
 export const SignUp: React.FC = () => {
-  const [state, setState] = useState({
+  const [state] = useState({
     isLoading: false,
     errorMessage: '',
     nameError: 'Campo obrigatório',

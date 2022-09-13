@@ -130,7 +130,7 @@ export const SignUp: React.FC<LoginProps> = ({
             disabled={hasFieldInvalid}
             className={Styles.submit}
             type="submit">
-            Entrar
+            Cadastrar
           </Button>
           <Link to="/login" replace className={Styles.link} data-testid="login">
             Voltar para Login

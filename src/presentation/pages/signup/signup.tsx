@@ -26,6 +26,8 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
 
     password: '',
     passwordError: '',
+
+    passwordConfirmation: '',
     passwordConfirmationError: 'Campo obrigatório',
   });
 
@@ -34,9 +36,10 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
       ...state,
       nameError: validation.validate('name', state.name),
       emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password)
+      passwordError: validation.validate('password', state.password),
+      passwordConfirmationError: validation.validate('password', state.passwordConfirmation),
     });
-  }, [state.name]);
+  }, [state.name, state.email, state.password, state.passwordConfirmation]);
 
   return (
     <div className={Styles.signup}>

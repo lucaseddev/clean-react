@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    act,
   cleanup,
   fireEvent,
   render,
@@ -9,6 +10,7 @@ import {
 import { SignUp } from './signup';
 import { AddAccountSpy, FormHelper, ValidationStub } from '@/presentation/test';
 import { faker } from '@faker-js/faker';
+import { EmailInUseError } from '@/domain/errors';
 
 type SutTypes = {
   sut: RenderResult;
@@ -186,5 +188,24 @@ describe('SignUp Page', () => {
     fireEvent.submit(sut.getByTestId('signup-form'));
 
     expect(addAccountSpy.callsCount).toBe(0);
+  });
+
+  it('Should present error if addAccount fails', async () => {
+    const { sut, addAccountSpy } = makeSut();
+
+    const error = new EmailInUseError();
+
+    jest
+      .spyOn(addAccountSpy, 'add')
+      .mockReturnValueOnce(Promise.reject(error));
+
+    await act(async () => {
+      await simulateValidSubmit(sut);
+    });
+
+    const mainError = await sut.findByTestId('main-error');
+    expect(mainError.textContent).toEqual(error.message);
+
+    FormHelper.testChildCount(sut, 'error-wrap', 1);
   });
 });

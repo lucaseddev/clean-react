@@ -37,9 +37,18 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
       nameError: validation.validate('name', state.name),
       emailError: validation.validate('email', state.email),
       passwordError: validation.validate('password', state.password),
-      passwordConfirmationError: validation.validate('password', state.passwordConfirmation),
+      passwordConfirmationError: validation.validate(
+        'password',
+        state.passwordConfirmation
+      ),
     });
   }, [state.name, state.email, state.password, state.passwordConfirmation]);
+
+  const isButtonDisabled =
+    !!state.emailError ||
+    !!state.passwordError ||
+    !!state.nameError ||
+    !!state.passwordConfirmationError;
 
   return (
     <div className={Styles.signup}>
@@ -75,7 +84,7 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
 
           <Button
             data-testid="submit"
-            disabled
+            disabled={isButtonDisabled}
             className={Styles.submit}
             type="submit">
             Entrar

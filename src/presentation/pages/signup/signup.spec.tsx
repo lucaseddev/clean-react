@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    act,
+  act,
   cleanup,
   fireEvent,
   render,
@@ -8,30 +8,47 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { SignUp } from './signup';
-import { AddAccountSpy, FormHelper, ValidationStub } from '@/presentation/test';
+import {
+  AddAccountSpy,
+  FormHelper,
+  SaveAccessTokenMock,
+  ValidationStub,
+} from '@/presentation/test';
+import { unstable_HistoryRouter as Router } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import { EmailInUseError } from '@/domain/errors';
+import { createMemoryHistory } from 'history';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
   validationError: string;
 };
 
+const history = createMemoryHistory();
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = params?.validationError;
 
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
 
   const sut = render(
-    <SignUp validation={validationStub} addAccount={addAccountSpy} />
+    <Router history={history}>
+      <SignUp
+        validation={validationStub}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   );
 
-  return { sut, addAccountSpy };
+  return { sut, addAccountSpy, saveAccessTokenMock };
 };
 
 const simulateValidSubmit = async (
@@ -195,9 +212,7 @@ describe('SignUp Page', () => {
 
     const error = new EmailInUseError();
 
-    jest
-      .spyOn(addAccountSpy, 'add')
-      .mockReturnValueOnce(Promise.reject(error));
+    jest.spyOn(addAccountSpy, 'add').mockReturnValueOnce(Promise.reject(error));
 
     await act(async () => {
       await simulateValidSubmit(sut);
@@ -207,5 +222,18 @@ describe('SignUp Page', () => {
     expect(mainError.textContent).toEqual(error.message);
 
     FormHelper.testChildCount(sut, 'error-wrap', 1);
+  });
+
+  it('Should call SaveAccessToken on success', async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+
+    await simulateValidSubmit(sut);
+
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAccountSpy.account.accessToken
+    );
+
+    expect(history.index).toBe(0);
+    expect(history.location.pathname).toBe('/login');
   });
 });

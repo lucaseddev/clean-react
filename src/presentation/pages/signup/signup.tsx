@@ -132,7 +132,7 @@ export const SignUp: React.FC<LoginProps> = ({
             type="submit">
             Entrar
           </Button>
-          <Link to="/login" className={Styles.link} data-testid="login">
+          <Link to="/login" replace className={Styles.link} data-testid="login">
             Voltar para Login
           </Link>
 

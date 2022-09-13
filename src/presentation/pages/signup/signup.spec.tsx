@@ -263,7 +263,7 @@ describe('SignUp Page', () => {
 
     fireEvent.click(login);
 
-    expect(history.index).toBe(1);
+    expect(history.index).toBe(0);
     expect(history.location.pathname).toBe('/login');
   });
 });

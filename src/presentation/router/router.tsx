@@ -2,19 +2,19 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import '@/presentation/styles/global.scss';
-import { SignUp } from '../pages';
 
-type TProps = {
+type TFactory = {
   makeLogin: React.FC;
+  makeSignup: React.FC;
 };
 
-export const Router: React.FC<TProps> = ({ makeLogin: MakeLogin }) => {
+export const Router: React.FC<TFactory> = (factory) => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route path="login" element={<MakeLogin />} />
-          <Route path="signup" element={<SignUp />} />
+          <Route path="login" element={<factory.makeLogin />} />
+          <Route path="signup" element={<factory.makeSignup />} />
         </Route>
       </Routes>
     </BrowserRouter>

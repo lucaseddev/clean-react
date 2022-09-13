@@ -1,4 +1,4 @@
-import { AddAccount } from '@/domain/usecases';
+import { AddAccount, SaveAccessToken } from '@/domain/usecases';
 import {
   Button,
   Footer,
@@ -9,14 +9,22 @@ import {
 import { FormContext } from '@/presentation/contexts';
 import { Validation } from '@/presentation/protocols/validation';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Styles from './signup.styles.scss';
 
 type LoginProps = {
   validation: Validation;
   addAccount: AddAccount;
+  saveAccessToken: SaveAccessToken;
 };
 
-export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
+export const SignUp: React.FC<LoginProps> = ({
+  validation,
+  addAccount,
+  saveAccessToken,
+}) => {
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
@@ -56,7 +64,10 @@ export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
         password: state.password,
         passwordConfirmation: state.passwordConfirmation,
       })
-      .then(account => account)
+      .then(async account => {
+        await saveAccessToken.save(account.accessToken);
+        navigate('/login', { replace: true });
+      })
       .catch(error => {
         setState({
           ...state,

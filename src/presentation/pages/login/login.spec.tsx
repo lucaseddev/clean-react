@@ -128,8 +128,7 @@ describe('Login Page', () => {
 
     await simulateValidSubmit(sut);
 
-    const spinner = sut.getByTestId('form-spinner');
-    expect(spinner).toBeVisible();
+    FormHelper.testElementIsVisible(sut, 'form-spinner');
   });
 
   it('Should call Authentication with correct values', async () => {

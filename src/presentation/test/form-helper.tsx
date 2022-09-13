@@ -39,3 +39,8 @@ export const populateField = (
     target: { value },
   });
 };
+
+export const testElementIsVisible = (sut: RenderResult, testId: string): void => {
+  const el = sut.getByTestId(testId);
+  expect(el).toBeVisible();
+};

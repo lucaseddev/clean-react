@@ -44,11 +44,6 @@ const simulateValidSubmit = async (
   await waitFor(() => form);
 };
 
-const testElementIsVisible = (sut: RenderResult, testId: string): void => {
-  const el = sut.getByTestId(testId);
-  expect(el).toBeVisible();
-};
-
 describe('SignUp Page', () => {
   afterEach(cleanup);
 
@@ -148,6 +143,6 @@ describe('SignUp Page', () => {
 
     await simulateValidSubmit(sut);
 
-    testElementIsVisible(sut, 'form-spinner');
+    FormHelper.testElementIsVisible(sut, 'form-spinner');
   });
 });

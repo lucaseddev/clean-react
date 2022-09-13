@@ -31,6 +31,15 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
     passwordConfirmationError: 'Campo obrigatório',
   });
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
+    setState({
+      ...state,
+      isLoading: true,
+    });
+  };
+
   useEffect(() => {
     setState({
       ...state,
@@ -55,7 +64,7 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
       <LoginHeader />
 
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form}>
+        <form className={Styles.form} onSubmit={handleSubmit} data-testid="signup-form">
           <h2>Login</h2>
           <Input
             name="name"

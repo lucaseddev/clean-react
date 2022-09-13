@@ -3,6 +3,7 @@ import {
   RequiredFieldValidation,
   EmailValidation,
   MinLengthValidation,
+  CompareFieldsValidation
 } from '@/validation/validators';
 
 export class ValidationBuilder {
@@ -27,6 +28,11 @@ export class ValidationBuilder {
 
   min(length: number): ValidationBuilder {
     this.validations.push(new MinLengthValidation(this.field, length));
+    return this;
+  }
+
+  compare(fieldToCompare: string): ValidationBuilder {
+    this.validations.push(new CompareFieldsValidation(this.field, fieldToCompare));
     return this;
   }
 

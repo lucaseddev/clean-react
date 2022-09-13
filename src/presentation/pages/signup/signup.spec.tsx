@@ -33,11 +33,7 @@ describe('SignUp Page', () => {
     FormHelper.testStatusForField(sut, 'name', validationError);
     FormHelper.testStatusForField(sut, 'email', validationError);
     FormHelper.testStatusForField(sut, 'password', validationError);
-    FormHelper.testStatusForField(
-      sut,
-      'passwordConfirmation',
-      'Campo obrigatório'
-    );
+    FormHelper.testStatusForField(sut, 'passwordConfirmation', validationError);
   });
 
   it('Should show name error if Validation fails', () => {
@@ -65,5 +61,14 @@ describe('SignUp Page', () => {
     FormHelper.populateField(sut, 'password');
 
     FormHelper.testStatusForField(sut, 'password', validationError);
+  });
+
+  it('Should show passwordConfirmation error if Validation fails', () => {
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
+
+    FormHelper.populateField(sut, 'passwordConfirmation');
+
+    FormHelper.testStatusForField(sut, 'passwordConfirmation', validationError);
   });
 });

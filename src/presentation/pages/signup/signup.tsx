@@ -20,8 +20,12 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
     errorMessage: '',
     name: '',
     nameError: '',
-    emailError: 'Campo obrigatório',
-    passwordError: 'Campo obrigatório',
+
+    email: '',
+    emailError: '',
+
+    password: '',
+    passwordError: '',
     passwordConfirmationError: 'Campo obrigatório',
   });
 
@@ -29,6 +33,8 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
     setState({
       ...state,
       nameError: validation.validate('name', state.name),
+      emailError: validation.validate('email', state.email),
+      passwordError: validation.validate('password', state.password)
     });
   }, [state.name]);
 

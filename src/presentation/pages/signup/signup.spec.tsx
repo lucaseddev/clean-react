@@ -1,5 +1,11 @@
 import React from 'react';
-import { cleanup, render, RenderResult } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderResult,
+  waitFor,
+} from '@testing-library/react';
 import { SignUp } from './signup';
 import { FormHelper, ValidationStub } from '@/presentation/test';
 import { faker } from '@faker-js/faker';
@@ -19,6 +25,28 @@ const makeSut = (params?: SutParams): SutTypes => {
   const sut = render(<SignUp validation={validationStub} />);
 
   return { sut };
+};
+
+const simulateValidSubmit = async (
+  sut: RenderResult,
+  name: string = faker.name.firstName(),
+  email: string = faker.internet.email(),
+  password: string = faker.internet.password()
+): Promise<void> => {
+  FormHelper.populateField(sut, 'name', name);
+  FormHelper.populateField(sut, 'email', email);
+  FormHelper.populateField(sut, 'password', password);
+  FormHelper.populateField(sut, 'passwordConfirmation', password);
+
+  const form = await sut.findByTestId('signup-form');
+  fireEvent.submit(form);
+
+  await waitFor(() => form);
+};
+
+const testElementIsVisible = (sut: RenderResult, testId: string): void => {
+  const el = sut.getByTestId(testId);
+  expect(el).toBeVisible();
 };
 
 describe('SignUp Page', () => {
@@ -113,5 +141,13 @@ describe('SignUp Page', () => {
     FormHelper.populateField(sut, 'passwordConfirmation');
 
     FormHelper.testButtonIsDisabled(sut, 'submit', false);
+  });
+
+  it('Should show loading indicator on submit', async () => {
+    const { sut } = makeSut();
+
+    await simulateValidSubmit(sut);
+
+    testElementIsVisible(sut, 'form-spinner');
   });
 });

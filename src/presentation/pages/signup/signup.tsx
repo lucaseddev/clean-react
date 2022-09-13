@@ -33,8 +33,16 @@ export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
     passwordConfirmationError: 'Campo obrigatório',
   });
 
+  const hasFieldInvalid =
+    !!state.emailError ||
+    !!state.passwordError ||
+    !!state.nameError ||
+    !!state.passwordConfirmationError;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
+
+    if (state.isLoading || hasFieldInvalid) return;
 
     setState({
       ...state,
@@ -64,12 +72,6 @@ export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
       ),
     });
   }, [state.name, state.email, state.password, state.passwordConfirmation]);
-
-  const isButtonDisabled =
-    !!state.emailError ||
-    !!state.passwordError ||
-    !!state.nameError ||
-    !!state.passwordConfirmationError;
 
   return (
     <div className={Styles.signup}>
@@ -108,7 +110,7 @@ export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
 
           <Button
             data-testid="submit"
-            disabled={isButtonDisabled}
+            disabled={hasFieldInvalid}
             className={Styles.submit}
             type="submit">
             Entrar

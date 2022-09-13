@@ -29,7 +29,7 @@ type SutParams = {
   validationError: string;
 };
 
-const history = createMemoryHistory();
+const history = createMemoryHistory({ initialEntries: ['/signup'] });
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
@@ -234,7 +234,7 @@ describe('SignUp Page', () => {
     );
 
     expect(history.index).toBe(0);
-    expect(history.location.pathname).toBe('/login');
+    expect(history.location.pathname).toBe('/');
   });
 
 
@@ -255,5 +255,15 @@ describe('SignUp Page', () => {
     expect(mainError.textContent).toEqual(error.message);
 
     FormHelper.testChildCount(sut, 'error-wrap', 1);
+  });
+
+  it('Should go to login page', () => {
+    const { sut } = makeSut();
+    const login = sut.getByTestId('login');
+
+    fireEvent.click(login);
+
+    expect(history.index).toBe(1);
+    expect(history.location.pathname).toBe('/login');
   });
 });

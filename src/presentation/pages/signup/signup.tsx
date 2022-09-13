@@ -57,7 +57,13 @@ export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
         passwordConfirmation: state.passwordConfirmation,
       })
       .then(account => account)
-      .catch(() => null);
+      .catch(error => {
+        setState({
+          ...state,
+          isLoading: false,
+          errorMessage: error.message,
+        });
+      });
   };
 
   useEffect(() => {

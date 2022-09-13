@@ -1,3 +1,4 @@
+import { AddAccount } from '@/domain/usecases';
 import {
   Button,
   Footer,
@@ -12,9 +13,10 @@ import Styles from './signup.styles.scss';
 
 type LoginProps = {
   validation: Validation;
+  addAccount: AddAccount;
 };
 
-export const SignUp: React.FC<LoginProps> = ({ validation }) => {
+export const SignUp: React.FC<LoginProps> = ({ validation, addAccount }) => {
   const [state, setState] = useState({
     isLoading: false,
     errorMessage: '',
@@ -38,6 +40,16 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
       ...state,
       isLoading: true,
     });
+
+    addAccount
+      .add({
+        name: state.name,
+        email: state.email,
+        password: state.password,
+        passwordConfirmation: state.passwordConfirmation,
+      })
+      .then(account => account)
+      .catch(() => null);
   };
 
   useEffect(() => {
@@ -64,7 +76,10 @@ export const SignUp: React.FC<LoginProps> = ({ validation }) => {
       <LoginHeader />
 
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form} onSubmit={handleSubmit} data-testid="signup-form">
+        <form
+          className={Styles.form}
+          onSubmit={handleSubmit}
+          data-testid="signup-form">
           <h2>Login</h2>
           <Input
             name="name"

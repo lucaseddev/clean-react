@@ -16,7 +16,7 @@ import {
 } from '@/presentation/test';
 import { unstable_HistoryRouter as Router } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
-import { EmailInUseError } from '@/domain/errors';
+import { EmailInUseError, UnexpectedError } from '@/domain/errors';
 import { createMemoryHistory } from 'history';
 
 type SutTypes = {
@@ -235,5 +235,25 @@ describe('SignUp Page', () => {
 
     expect(history.index).toBe(0);
     expect(history.location.pathname).toBe('/login');
+  });
+
+
+  it('Should present error if SaveAccessToken fails', async () => {
+    const { sut, saveAccessTokenMock } = makeSut();
+
+    const error = new UnexpectedError();
+
+    jest
+      .spyOn(saveAccessTokenMock, 'save')
+      .mockReturnValueOnce(Promise.reject(error));
+
+    await act(async () => {
+      await simulateValidSubmit(sut);
+    });
+
+    const mainError = await sut.findByTestId('main-error');
+    expect(mainError.textContent).toEqual(error.message);
+
+    FormHelper.testChildCount(sut, 'error-wrap', 1);
   });
 });
